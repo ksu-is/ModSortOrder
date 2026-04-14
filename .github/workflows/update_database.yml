@@ -46,12 +46,15 @@ jobs:
           docker compose cp mod-scraper:/home/steam/app/mod/Scripts/data/ ./mod/Scripts/
           docker compose cp mod-scraper:/home/steam/app/changelog.json ./changelog.json
           
-          changelog=`cat ./changelog.json`
-          echo "::set-output name=changelog::$changelog"
+          if [ ! -f ./changelog.json ]; then
+            echo "changelog={\"changeCount\":0,\"messageMD\":\"No changes\"}" >> $GITHUB_OUTPUT
+          else
+            changelog=`cat ./changelog.json`
+            echo "changelog=$changelog" >> $GITHUB_OUTPUT
+          fi
 
-        
       - name: Commit updated databases
-        if: ${{ fromJson(steps.extract.outputs.changelog).changeCount > 0 }}
+        if: ${{ steps.extract.outputs.changelog != '' && fromJson(steps.extract.outputs.changelog).changeCount > 0 }}
         env:
           COMMIT_MESSAGE: ${{ fromJson(steps.extract.outputs.changelog).messageMD }}
         run: |
