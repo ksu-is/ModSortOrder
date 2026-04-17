@@ -1,2 +1,6 @@
-#HRM
-#step 1?
+- [x] Create Title for website DONE
+- [x] Create Description of website DONE
+- [x] Create README DONE
+- [x] Create LICENSE DONE
+- [ ] Upload code from scrap-mechanic-mod-scraper
+- [ ] Clone files to VS Code
